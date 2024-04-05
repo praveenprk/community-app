@@ -105,3 +105,92 @@ module.exports = router;
 ```
 
 **MODELS**
+
+the models for the MERN forum app based on the above schema:
+
+```javascript
+// User model
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);
+```
+
+```javascript
+// Topic model
+const mongoose = require('mongoose');
+
+const topicSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  description: String,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = mongoose.model('Topic', topicSchema);
+```
+
+```javascript
+// Discussion model
+const mongoose = require('mongoose');
+
+const discussionSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    enum: ['opinion', 'interpretation', 'debate'],
+    required: true
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  topic: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Topic',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = mongoose.model('Discussion', discussionSchema);
+```
+
+These models define the structure of the User, Topic, and Discussion objects, including their properties and relationships.
